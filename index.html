@@ -3,44 +3,191 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scholarship Search</title>
-
+  <title>CHED TDP Scholarship — Congressman Roy Gonzales</title>
+  <meta name="description" content="Official CHED TDP 2026–2027 Scholarship Program search portal for the office of Congressman Roy Gonzales, Lone District of Santa Rosa, Laguna." />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* ══════════════════════════════════════
+       DESIGN TOKENS
+    ══════════════════════════════════════ */
     :root {
-      --red: #C8102E;
-      --red-deep: #9E0B23;
-      --red-soft: #FDF1F4;
-      --ink: #1f2430;
-      --ink-soft: #5e6472;
-      --surface: rgba(255, 255, 255, 0.78);
-      --surface-strong: #ffffff;
-      --line: #e9edf2;
-      --success: #177a4d;
-      --success-bg: #eaf8f0;
-      --shadow: 0 18px 45px rgba(34, 21, 25, 0.12);
+      --red:           #C8102E;
+      --red-deep:      #9E0B23;
+      --red-soft:      #FDF1F4;
+      --ink:           #1f2430;
+      --ink-soft:      #5e6472;
+      --surface:       rgba(255, 255, 255, 0.80);
+      --surface-solid: #ffffff;
+      --line:          #e9edf2;
+      --success:       #177a4d;
+      --success-bg:    #eaf8f0;
+      --shadow:        0 18px 48px rgba(34, 21, 25, 0.11);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    /* ══════════════════════════════════════
+       RESET
+    ══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    ul   { list-style: none; }
+    button { cursor: pointer; }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
+    /* ══════════════════════════════════════
+       BODY
+    ══════════════════════════════════════ */
     body {
-      margin: 0;
       min-height: 100vh;
       font-family: 'Inter', system-ui, sans-serif;
       color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(200, 16, 46, 0.12), transparent 35%),
-        linear-gradient(180deg, #fff8f9 0%, #fff 32%, #fff 100%);
+      background: #fff8f9;
+      overflow-x: hidden;
       position: relative;
     }
 
+    /* ══════════════════════════════════════
+       BACKGROUND — PARTICLE CANVAS
+    ══════════════════════════════════════ */
+    #particleCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════
+       BACKGROUND — PHOTO PLACEHOLDER LAYERS
+    ══════════════════════════════════════
+
+      📸 HOW TO ADD YOUR BACKGROUND PHOTO
+      ------------------------------------
+      Locate the element  <div class="bg-photo"></div>  in the HTML body.
+      In the CSS below, uncomment and fill in the url():
+
+        background-image: url('your-background-photo.jpg');
+
+      The opacity is set to 0.08 for a subtle watermark effect.
+      Adjust between 0.05 and 0.15 to taste.
+
+    ══════════════════════════════════════ */
+    .bg-photo {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      /* background-image: url('your-background-photo.jpg'); */
+      background-size: cover;
+      background-position: center;
+      opacity: 0.08;
+      /* Crosshatch gradient pattern shows while no photo is set */
+      background-color: transparent;
+    }
+    .bg-photo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          rgba(200, 16, 46, 0.018) 0px,
+          rgba(200, 16, 46, 0.018) 1px,
+          transparent 1px,
+          transparent 30px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          rgba(200, 16, 46, 0.018) 0px,
+          rgba(200, 16, 46, 0.018) 1px,
+          transparent 1px,
+          transparent 30px
+        );
+    }
+
+    /* ══════════════════════════════════════
+       BACKGROUND — ANIMATED GRADIENT BLOBS
+    ══════════════════════════════════════ */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(72px);
+      will-change: transform;
+    }
+    .blob-1 {
+      width: 680px; height: 680px;
+      top: -140px; left: -210px;
+      background: radial-gradient(circle, rgba(200,16,46,0.13) 0%, transparent 68%);
+      animation: blobDrift 14s ease-in-out infinite;
+    }
+    .blob-2 {
+      width: 540px; height: 540px;
+      top: 35%; right: -170px;
+      background: radial-gradient(circle, rgba(200,16,46,0.09) 0%, transparent 68%);
+      animation: blobDrift 18s ease-in-out infinite reverse;
+    }
+    .blob-3 {
+      width: 430px; height: 430px;
+      bottom: -60px; left: 22%;
+      background: radial-gradient(circle, rgba(255,160,185,0.11) 0%, transparent 68%);
+      animation: blobDrift 11s ease-in-out infinite 2.5s;
+    }
+
+    .glow {
+      position: fixed;
+      inset: 8% auto auto 50%;
+      transform: translateX(-50%);
+      width: min(90vw, 900px);
+      height: min(80vw, 900px);
+      background: radial-gradient(circle,
+        rgba(200,16,46,0.14) 0%,
+        rgba(200,16,46,0.03) 28%,
+        transparent 64%);
+      pointer-events: none;
+      z-index: 0;
+      animation: pulseGlow 7s ease-in-out infinite;
+    }
+
+    .horizon {
+      position: fixed;
+      left: 50%; bottom: -270px;
+      transform: translateX(-50%);
+      width: min(140vw, 1600px);
+      height: 430px;
+      border-radius: 50%;
+      background: linear-gradient(180deg,
+        rgba(200,16,46,0.10),
+        rgba(200,16,46,0.01));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dot {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(200,16,46,0.65);
+      pointer-events: none;
+      z-index: 0;
+      animation: twinkle 4s ease-in-out infinite;
+    }
+
+    @keyframes blobDrift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(32px, -26px) scale(1.07); }
+      66%       { transform: translate(-22px, 18px) scale(0.93); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+      50%       { opacity: 1;   transform: translateX(-50%) scale(1.08); }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.22; transform: scale(1); }
+      50%       { opacity: 0.75; transform: scale(1.45); }
+    }
+
+    /* ══════════════════════════════════════
+       APP SHELL
+    ══════════════════════════════════════ */
     .app-shell {
       position: relative;
       z-index: 1;
@@ -49,6 +196,9 @@
       padding: 28px 20px 72px;
     }
 
+    /* ══════════════════════════════════════
+       TOPBAR
+    ══════════════════════════════════════ */
     .topbar {
       display: flex;
       align-items: center;
@@ -60,7 +210,7 @@
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       color: var(--ink);
       font-weight: 700;
       letter-spacing: 0.03em;
@@ -68,24 +218,71 @@
       font-size: 0.75rem;
     }
 
+    /* ══════════════════════════════════════
+       OFFICIAL LOGO PLACEHOLDER
+       ──────────────────────────────────────
+       📸 TO REPLACE: swap this <div> with:
+       <img src="official-logo.png"
+            alt="City of Santa Rosa Official Logo"
+            class="brand-logo" />
+    ══════════════════════════════════════ */
+    .logo-placeholder {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      border: 2px dashed rgba(200, 16, 46, 0.35);
+      background: linear-gradient(135deg,
+        rgba(200,16,46,0.08) 0%,
+        rgba(200,16,46,0.02) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      gap: 2px;
+      transition: border-color 0.22s, background 0.22s;
+      user-select: none;
+    }
+    .logo-placeholder:hover {
+      border-color: rgba(200,16,46,0.55);
+    }
+    .logo-placeholder-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 6.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: rgba(200,16,46,0.38);
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    /* Used when user swaps in an actual <img> */
+    .brand-logo {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    /* Red square brand mark (existing) */
     .brand-mark {
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       border-radius: 12px;
       background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
       position: relative;
-      box-shadow: 0 10px 20px rgba(200, 16, 46, 0.25);
+      box-shadow: 0 10px 22px rgba(200,16,46,0.26);
+      flex-shrink: 0;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
     }
-
-    .brand-mark::before,
-    .brand-mark::after {
+    .brand-mark:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(200,16,46,0.32);
+    }
+    .brand-mark::before, .brand-mark::after {
       content: "";
       position: absolute;
       inset: 10px;
-      border: 2px solid rgba(255, 255, 255, 0.8);
+      border: 2px solid rgba(255,255,255,0.8);
       border-radius: 50%;
     }
-
     .brand-mark::after {
       inset: 18px 12px 12px 18px;
       border-width: 1.5px;
@@ -94,6 +291,9 @@
       transform: rotate(16deg);
     }
 
+    /* ══════════════════════════════════════
+       HERO BANNER
+    ══════════════════════════════════════ */
     .hero {
       background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
       border-radius: 28px;
@@ -107,22 +307,50 @@
       overflow: hidden;
       position: relative;
     }
-
     .hero::before {
       content: "";
       position: absolute;
       inset: auto -70px -90px auto;
-      width: 320px;
-      height: 320px;
+      width: 320px; height: 320px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255,255,255,0.07);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: -70px auto auto -70px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
     }
 
-    .hero-copy,
-    .hero-panel {
-      position: relative;
-      z-index: 1;
+    /* ══════════════════════════════════════
+       HERO BACKGROUND PHOTO PLACEHOLDER
+       ──────────────────────────────────────
+       📸 TO REPLACE: uncomment and fill url():
+       background-image: url('hero-overlay-photo.jpg');
+       Blend mode "overlay" makes it mix with the red gradient.
+    ══════════════════════════════════════ */
+    .hero-bg-ph {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/congressmanroygonzales.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.12;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      /* Subtle diagonal stripe pattern visible while no photo is set */
+      background-image: repeating-linear-gradient(
+        105deg,
+        rgba(255,255,255,0.04) 0px,
+        rgba(255,255,255,0.04) 1px,
+        transparent 1px,
+        transparent 20px
+      );
     }
+
+    .hero-copy, .hero-panel { position: relative; z-index: 1; }
 
     .office-line {
       display: inline-block;
@@ -135,7 +363,6 @@
     }
 
     h1 {
-      margin: 0;
       font-family: 'Barlow Condensed', 'Inter', sans-serif;
       font-weight: 700;
       font-size: clamp(2.5rem, 5vw, 4.5rem);
@@ -163,7 +390,7 @@
       align-items: center;
       gap: 8px;
       background: rgba(255,255,255,0.13);
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.18);
       font-size: 0.82rem;
@@ -172,21 +399,27 @@
     }
 
     .dot-mini {
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       background: #fff;
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.14);
+      animation: pulseMini 2.2s ease-in-out infinite;
+    }
+    @keyframes pulseMini {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.14); }
+      50%       { box-shadow: 0 0 0 9px rgba(255,255,255,0.05); }
     }
 
     .hero-card {
       width: 100%;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.16);
       border-radius: 18px;
       padding: 16px 18px;
       backdrop-filter: blur(8px);
+      transition: background 0.2s;
     }
+    .hero-card:hover { background: rgba(255,255,255,0.15); }
 
     .hero-card-title {
       margin: 0 0 8px;
@@ -195,7 +428,6 @@
       text-transform: uppercase;
       opacity: 0.82;
     }
-
     .hero-card-value {
       margin: 0;
       font-weight: 700;
@@ -203,6 +435,88 @@
       line-height: 1;
     }
 
+    /* ══════════════════════════════════════
+       NAVIGATION BAR
+    ══════════════════════════════════════ */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.84);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.55);
+      border-radius: 18px;
+      box-shadow: 0 4px 28px rgba(34,21,25,0.08);
+      padding: 6px;
+      margin: 20px 0 0;
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 11px 20px;
+      border: none;
+      background: transparent;
+      color: var(--ink-soft);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: background 0.22s, color 0.22s, box-shadow 0.22s;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.015em;
+    }
+    .nav-tab:hover:not(.active) {
+      background: rgba(200,16,46,0.07);
+      color: var(--red);
+    }
+    .nav-tab.active {
+      background: linear-gradient(135deg, var(--red), var(--red-deep));
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(200,16,46,0.28);
+    }
+
+    /* Ripple on click */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.28);
+      width: 120px; height: 120px;
+      margin-top: -60px; margin-left: -60px;
+      pointer-events: none;
+      animation: rippleAnim 0.65s linear forwards;
+    }
+    @keyframes rippleAnim {
+      from { transform: scale(0); opacity: 1; }
+      to   { transform: scale(3.5); opacity: 0; }
+    }
+
+    /* ══════════════════════════════════════
+       PAGE SWITCHING
+    ══════════════════════════════════════ */
+    .page {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.28s ease, transform 0.28s ease;
+      pointer-events: none;
+    }
+    .page.active  { pointer-events: auto; }
+    .page.visible { opacity: 1; transform: translateY(0); }
+
+    /* ══════════════════════════════════════
+       SCROLL REVEAL — base state
+    ══════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+    /* ══════════════════════════════════════
+       HOME — SEARCH PANEL
+    ══════════════════════════════════════ */
     .content {
       max-width: 700px;
       margin: 28px auto 0;
@@ -214,7 +528,7 @@
       border-radius: 22px;
       box-shadow: var(--shadow);
       padding: 18px 18px 14px;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
 
     .search-header {
@@ -236,32 +550,32 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: var(--surface-strong);
-      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      border: 1.5px solid var(--line);
       border-radius: 16px;
       padding: 6px 10px 6px 14px;
-      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02);
+      transition: border-color 0.22s, box-shadow 0.22s;
+    }
+    .search-row:focus-within {
+      border-color: rgba(200,16,46,0.4);
+      box-shadow: 0 0 0 3px rgba(200,16,46,0.08);
     }
 
     .search-icon {
       flex-shrink: 0;
-      width: 20px;
-      height: 20px;
+      width: 20px; height: 20px;
       border-radius: 50%;
       border: 2px solid var(--ink-soft);
       position: relative;
-      opacity: 0.8;
+      opacity: 0.7;
     }
-
     .search-icon::after {
       content: "";
       position: absolute;
-      width: 8px;
-      height: 2px;
+      width: 8px; height: 2px;
       background: var(--ink-soft);
       border-radius: 2px;
-      right: -5px;
-      bottom: -1px;
+      right: -5px; bottom: -1px;
       transform: rotate(45deg);
     }
 
@@ -276,33 +590,28 @@
       padding: 12px 0;
       outline: none;
     }
-
-    input::placeholder {
-      color: #9aa3b2;
-    }
+    input::placeholder { color: #9aa3b2; }
 
     .clear-button {
       border: none;
       background: var(--red-soft);
       color: var(--red-deep);
-      font: inherit;
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
+      font-size: 0.88rem;
       border-radius: 10px;
-      padding: 8px 10px;
-      cursor: pointer;
-      transition: transform 0.18s ease, opacity 0.18s ease;
+      padding: 8px 12px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
-
-    .clear-button:hover,
-    .clear-button:focus-visible {
+    .clear-button:hover {
       transform: translateY(-1px);
-      opacity: 0.95;
+      box-shadow: 0 5px 14px rgba(200,16,46,0.18);
     }
+    .clear-button[hidden] { display: none; }
 
-    .clear-button[hidden] {
-      display: none;
-    }
-
+    /* ══════════════════════════════════════
+       HOME — RESULTS PANEL
+    ══════════════════════════════════════ */
     .results-panel {
       margin-top: 24px;
       background: var(--surface);
@@ -310,6 +619,7 @@
       border-radius: 22px;
       box-shadow: var(--shadow);
       padding: 18px 18px 20px;
+      backdrop-filter: blur(12px);
     }
 
     .results-header {
@@ -333,15 +643,13 @@
       background: var(--red-soft);
       color: var(--red-deep);
       border-radius: 999px;
-      padding: 7px 10px;
+      padding: 7px 12px;
       font-size: 0.78rem;
       font-weight: 700;
+      transition: transform 0.2s ease;
     }
 
-    .record-list {
-      display: grid;
-      gap: 12px;
-    }
+    .record-list { display: grid; gap: 12px; }
 
     .person-card {
       display: flex;
@@ -350,27 +658,27 @@
       gap: 16px;
       width: 100%;
       padding: 16px 18px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255,255,255,0.92);
       border: 1px solid var(--line);
       border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(31, 36, 48, 0.04);
+      box-shadow: 0 8px 22px rgba(31,36,48,0.04);
+      opacity: 0;
+      transform: translateY(14px);
+      animation: cardIn 0.36s ease forwards;
+      /* 3-D tilt is applied via JS inline style */
+      transition: box-shadow 0.22s ease, border-color 0.22s ease;
+      will-change: transform;
+    }
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .person-name {
       margin: 0;
       font-size: 1.02rem;
-      line-height: 1.3;
+      line-height: 1.35;
       font-weight: 700;
       color: var(--ink);
-    }
-
-    .person-meta {
-      margin-top: 6px;
-      color: var(--ink-soft);
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 600;
     }
 
     .badge {
@@ -380,195 +688,688 @@
       border-radius: 999px;
       background: var(--success-bg);
       color: var(--success);
-      padding: 7px 10px;
+      padding: 7px 12px;
       font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .empty-state,
-    .no-results {
-      background: rgba(255,255,255,0.8);
+    .empty-state, .no-results {
+      background: rgba(255,255,255,0.80);
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 22px 18px;
+      padding: 26px 18px;
       color: var(--ink-soft);
       font-weight: 500;
       text-align: center;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    .glow {
-      position: fixed;
-      inset: 8% auto auto 50%;
-      transform: translateX(-50%);
-      width: min(90vw, 980px);
-      height: min(80vw, 980px);
-      background: radial-gradient(circle, rgba(200, 16, 46, 0.18) 0%, rgba(200, 16, 46, 0.04) 25%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      animation: pulseGlow 6s ease-in-out infinite;
+    /* ══════════════════════════════════════
+       ABOUT PAGE
+    ══════════════════════════════════════ */
+    .about-content {
+      max-width: 780px;
+      margin: 28px auto 0;
+      display: grid;
+      gap: 20px;
     }
 
-    .horizon {
-      position: fixed;
-      left: 50%;
-      bottom: -260px;
-      transform: translateX(-50%);
-      width: min(140vw, 1600px);
-      height: 420px;
+    .about-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 26px 28px;
+      backdrop-filter: blur(12px);
+      height: 100%;
+    }
+
+    .about-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .about-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--red), var(--red-deep));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(200,16,46,0.22);
+      flex-shrink: 0;
+    }
+    .about-icon svg {
+      width: 22px; height: 22px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .about-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .about-card p {
+      color: var(--ink-soft);
+      line-height: 1.77;
+      font-size: 0.93rem;
+    }
+    .about-card p + p { margin-top: 10px; }
+
+    .about-list {
+      margin-top: 14px;
+      display: grid;
+      gap: 9px;
+    }
+    .about-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .about-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 7px; height: 7px;
+      margin-top: 6px;
       border-radius: 50%;
-      background: linear-gradient(180deg, rgba(200, 16, 46, 0.12), rgba(200, 16, 46, 0.02));
-      pointer-events: none;
-      z-index: 0;
+      background: var(--red);
     }
 
-    .dot {
-      position: fixed;
-      display: block;
+    /* ══════════════════════════════════════
+       CONGRESSMAN PHOTO PLACEHOLDER
+       ──────────────────────────────────────
+       📸 TO REPLACE: swap this <div> with:
+       <img src="congressman-photo.jpg"
+            alt="Congressman Roy Gonzales"
+            style="width:100%;border-radius:16px;
+                   margin-bottom:18px;object-fit:cover;">
+    ══════════════════════════════════════ */
+    .photo-placeholder {
+      width: 100%;
+      height: 200px;
+      border-radius: 16px;
+      border: 2px dashed rgba(200, 16, 46, 0.28);
+      background:
+        linear-gradient(135deg,
+          rgba(200,16,46,0.06) 0%,
+          rgba(200,16,46,0.015) 50%,
+          rgba(200,16,46,0.04) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      transition: border-color 0.22s;
+    }
+    .photo-placeholder:hover { border-color: rgba(200,16,46,0.5); }
+
+    .photo-placeholder-circle {
+      width: 62px; height: 62px;
       border-radius: 50%;
-      background: rgba(200, 16, 46, 0.7);
-      pointer-events: none;
-      z-index: 0;
-      animation: twinkle 4s ease-in-out infinite;
+      border: 2px dashed rgba(200,16,46,0.28);
+      background: rgba(200,16,46,0.05);
+    }
+    .photo-placeholder-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: rgba(200,16,46,0.36);
+      font-family: 'Inter', sans-serif;
     }
 
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
-      50% { opacity: 1; transform: translateX(-50%) scale(1.06); }
+    /* ══════════════════════════════════════
+       FAQ PAGE
+    ══════════════════════════════════════ */
+    .faq-content {
+      max-width: 720px;
+      margin: 28px auto 0;
+      display: grid;
+      gap: 10px;
     }
 
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.35); }
+    .faq-section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      padding-left: 4px;
+      margin-bottom: 2px;
     }
 
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 18px;
+      box-shadow: 0 6px 22px rgba(34,21,25,0.06);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: box-shadow 0.22s;
+    }
+    .faq-item:hover { box-shadow: 0 10px 30px rgba(34,21,25,0.09); }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      background: transparent;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-align: left;
+      transition: color 0.2s;
+    }
+    .faq-question:hover { color: var(--red); }
+    .faq-question[aria-expanded="true"] { color: var(--red); }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--red-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, background 0.2s;
+    }
+    .faq-question[aria-expanded="true"] .faq-chevron {
+      transform: rotate(180deg);
+      background: rgba(200,16,46,0.13);
+    }
+    .faq-chevron-icon {
+      width: 8px; height: 8px;
+      border-right: 2px solid var(--red);
+      border-bottom: 2px solid var(--red);
+      transform: rotate(45deg) translate(-1px, -2px);
+    }
+
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .faq-body.open { max-height: 400px; }
+
+    .faq-answer {
+      padding: 14px 20px 18px;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      line-height: 1.77;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
     @media (max-width: 720px) {
-      .topbar {
-        justify-content: center;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-panel {
-        width: 100%;
-      }
-
-      .search-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .person-card {
-        align-items: flex-start;
-        flex-direction: column;
-      }
+      .topbar        { justify-content: center; }
+      .hero          { grid-template-columns: 1fr; }
+      .hero-panel    { width: 100%; }
+      .search-header { flex-direction: column; align-items: flex-start; }
+      .person-card   { align-items: flex-start; flex-direction: column; }
+      .about-two-col { grid-template-columns: 1fr; }
+      .nav-tab       { font-size: 0.82rem; padding: 10px 10px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ══════ BACKGROUND LAYERS ══════ -->
+  <canvas id="particleCanvas"></canvas>
+  <div class="bg-photo"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
   <div class="glow"></div>
   <div class="horizon"></div>
 
-  <span class="dot" style="width:6px; height:6px; top:12%; left:15%; animation-delay:0s;"></span>
-  <span class="dot" style="width:4px; height:4px; top:22%; left:80%; animation-delay:0.6s;"></span>
-  <span class="dot" style="width:8px; height:8px; top:68%; left:10%; animation-delay:1.2s;"></span>
-  <span class="dot" style="width:5px; height:5px; top:75%; left:88%; animation-delay:1.8s;"></span>
-  <span class="dot" style="width:3px; height:3px; top:40%; left:92%; animation-delay:2.4s;"></span>
-  <span class="dot" style="width:5px; height:5px; top:85%; left:45%; animation-delay:0.3s;"></span>
+  <!-- Ambient floating dots -->
+  <span class="dot" style="width:6px;height:6px;top:12%;left:15%;animation-delay:0s;"></span>
+  <span class="dot" style="width:4px;height:4px;top:22%;left:80%;animation-delay:0.6s;"></span>
+  <span class="dot" style="width:8px;height:8px;top:68%;left:10%;animation-delay:1.2s;"></span>
+  <span class="dot" style="width:5px;height:5px;top:75%;left:88%;animation-delay:1.8s;"></span>
+  <span class="dot" style="width:3px;height:3px;top:40%;left:92%;animation-delay:2.4s;"></span>
+  <span class="dot" style="width:5px;height:5px;top:85%;left:45%;animation-delay:0.3s;"></span>
 
+  <!-- ══════ APP ══════ -->
   <div class="app-shell">
+
+    <!-- TOPBAR -->
     <div class="topbar">
       <div class="brand">
+        <img src="images/logo-santarosa.png"            ║
+          ║       alt="City of Santa Rosa Logo"      ║
+          ║       class="brand-logo">   
         <span class="brand-mark" aria-hidden="true"></span>
         <span>City of Santa Rosa</span>
       </div>
     </div>
 
+    <!-- HERO BANNER -->
     <header class="hero">
+      <div class="hero-bg-ph"></div>
+
       <div class="hero-copy">
         <div class="office-line">Congressman Roy Gonzales</div>
-        <h1 style="margin: 0; line-height: 1;">
-          <span style="display: block; font-size: 0.5em; line-height: 1; margin-bottom: 0.15em;">CHED TDP</span>
-          <span style="display: block;">Scholarship Program '26-'27</span>
+        <h1 style="margin:0;line-height:1;">
+          <span style="display:block;font-size:0.5em;line-height:1;margin-bottom:0.15em;">CHED TDP</span>
+          <span style="display:block;">Scholarship Program '26-'27</span>
         </h1>
         <p class="tagline">"Sa Bagong Kongreso, Ramdam ang Serbisyo"</p>
       </div>
 
       <div class="hero-panel">
-        <div class="stat-badge"><span class="dot-mini"></span> CHED TDP Applicants</div>
+        <div class="stat-badge">
+          <span class="dot-mini"></span> CHED TDP Applicants
+        </div>
         <div class="hero-card">
           <p class="hero-card-title">Application Records</p>
-          <p class="hero-card-value" id="totalCount">0</p>
+          <p class="hero-card-value" id="totalCount">—</p>
         </div>
       </div>
     </header>
 
-    <main class="content">
-      <section class="search-panel" aria-label="Applicant search panel">
-        <div class="search-header">
-          <p class="subtitle">Only qualified applicants will appear in this website.</p>
+    <!-- NAVIGATION -->
+    <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+      <button class="nav-tab active" data-page="home" aria-current="page">Home</button>
+      <button class="nav-tab" data-page="about">About</button>
+      <button class="nav-tab" data-page="faqs">FAQs</button>
+    </nav>
+
+    <!-- ════════════════════════════════
+         PAGE: HOME
+    ════════════════════════════════ -->
+    <div id="page-home" class="page active visible">
+      <main class="content">
+        <section class="search-panel" aria-label="Applicant search">
+          <div class="search-header">
+            <p class="subtitle">Only qualified applicants will appear in this website.</p>
+          </div>
+          <div class="search-row">
+            <div class="search-icon" aria-hidden="true"></div>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Enter your Registered Name or Exact Student Number…"
+              aria-label="Search applicants"
+            />
+            <button type="button" id="clearButton" class="clear-button" hidden aria-label="Clear search">Clear</button>
+          </div>
+        </section>
+
+        <section class="results-panel" aria-live="polite">
+          <div class="results-header">
+            <p class="results-label">Results</p>
+            <span class="results-count" id="resultsCount">0 matches</span>
+          </div>
+          <div id="results" class="record-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: ABOUT
+    ════════════════════════════════ -->
+    <div id="page-about" class="page">
+      <div class="about-content">
+
+        <!-- What is CHED TDP -->
+        <div class="reveal">
+          <div class="about-card">
+            <div class="about-card-header">
+              <div class="about-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+              </div>
+              <h2 class="about-card-title">About the CHED TDP Scholarship</h2>
+            </div>
+            <p>The <strong>CHED Tulong Dunong Program (TDP)</strong> is a scholarship initiative by the Commission on Higher Education of the Republic of the Philippines. It provides financial assistance — including subsistence and book allowances — to qualified college students from low-income families.</p>
+            <p>Through the endorsement of <strong>Congressman Roy Gonzales</strong>, representing the Lone District of Santa Rosa, Laguna, eligible residents of Santa Rosa are given priority access to the program for Academic Year 2026–2027.</p>
+          </div>
         </div>
 
-        <div class="search-row">
-          <div class="search-icon" aria-hidden="true"></div>
-          <input type="text" id="searchInput" placeholder="Enter your Registered Name or Exact Student Number..." aria-label="Search applicants" />
-          <button type="button" id="clearButton" class="clear-button" hidden aria-label="Clear search">Clear</button>
-        </div>
-      </section>
+        <!-- Two-column: Goals & Eligibility -->
+        <div class="about-two-col">
+          <div class="reveal">
+            <div class="about-card">
+              <div class="about-card-header">
+                <div class="about-icon">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                  </svg>
+                </div>
+                <h2 class="about-card-title">Program Goals</h2>
+              </div>
+              <ul class="about-list">
+                <li>Provide financial assistance to deserving students</li>
+                <li>Increase access to higher education in Santa Rosa</li>
+                <li>Support low-income families send their children to college</li>
+                <li>Promote academic excellence and civic responsibility</li>
+              </ul>
+            </div>
+          </div>
 
-      <section class="results-panel" aria-live="polite">
-        <div class="results-header">
-          <p class="results-label">Results</p>
-          <span class="results-count" id="resultsCount">0 matches</span>
+          <div class="reveal">
+            <div class="about-card">
+              <div class="about-card-header">
+                <div class="about-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <h2 class="about-card-title">Who May Apply</h2>
+              </div>
+              <ul class="about-list">
+                <li>Bona fide resident of Santa Rosa, Laguna</li>
+                <li>Enrolled in a CHED-accredited college or university</li>
+                <li>Family income within CHED TDP guidelines</li>
+                <li>Good academic standing (GWA of 2.50 or better)</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div id="results" class="record-list"></div>
-      </section>
-    </main>
-  </div>
+
+        <!-- Congressman card -->
+        <div class="reveal">
+          <div class="about-card">
+            <div class="about-card-header">
+              <div class="about-icon">
+                <svg viewBox="0 0 24 24">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+              </div>
+              <h2 class="about-card-title">Office of Congressman Roy Gonzales</h2>
+            </div>
+
+              <img src="images/congressmanroygonzales.jpg"
+                alt="Congressman Roy Gonzales"
+                style="width:100%;
+                border-radius:16px;
+                margin-bottom:18px;
+                object-fit:cover;">
+
+                <p>Congressman Roy Gonzales represents the Lone District of Santa Rosa, Laguna in the House of Representatives of the Philippines. His office is dedicated to delivering meaningful legislative and social services to every constituent of Santa Rosa.</p>
+                <p>The CHED TDP scholarship is one of many service initiatives his office facilitates to uplift the quality of life and future prospects of Santa Rosa's youth.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    <!-- ════════════════════════════════
+         PAGE: FAQs
+    ════════════════════════════════ -->
+    <div id="page-faqs" class="page">
+      <div class="faq-content">
+
+        <p class="faq-section-label">Frequently Asked Questions</p>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            What is the CHED Tulong Dunong Program (TDP)?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              The CHED Tulong Dunong Program (TDP) is a financial assistance program by the Commission on Higher Education (CHED). It provides subsistence and book allowances to deserving but financially challenged college students across the Philippines, endorsed through district representatives.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            How do I know if I am qualified?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              Use the search tool on the Home page. Enter your registered full name or your exact student number. If your name appears with a green <strong>"Qualified"</strong> badge, you are included in the endorsed list for Academic Year 2026–2027.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            What are the general requirements needed?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              Generally required documents include: a valid school ID or enrollment certificate, a copy of your grades from the previous semester, proof of residency in Santa Rosa, Laguna, and a Certificate of Good Moral Character from your school. Please visit or contact the congressional office for the complete and updated list.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            I searched my name but I cannot find it. What should I do?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              Make sure you are typing your name exactly as it appears on your school records, or your exact student number. The search requires at least 4 characters. If your name still does not appear, contact the Office of Congressman Roy Gonzales directly — your application may still be under processing or review.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            When will the scholarship benefits be released?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              Release schedules are coordinated by CHED and the congressional office with your school. Qualified scholars will be notified through official channels. Follow the official announcements of the Office of Congressman Roy Gonzales for updates on release dates.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Is there a deadline for submitting requirements?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              Yes. Deadlines will be announced by the congressional office. It is strongly advised to submit your requirements as soon as possible. Late submissions may not be accommodated and could result in disqualification from benefits for that term.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Can I apply if I am studying outside Santa Rosa?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              Generally yes — as long as you are a bona fide resident of Santa Rosa, Laguna and enrolled in a CHED-accredited institution anywhere in the Philippines. Proof of residency is required. Please confirm your eligibility with the district office.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            How can I contact the Office of Congressman Roy Gonzales?
+            <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-answer">
+              You may visit the district office in Santa Rosa, Laguna during official business hours, or reach out through the official Facebook page or email address of the Office. Check the latest official announcements for up-to-date contact information.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end .app-shell -->
 
   <script>
-    let applicants = [];
-    const resultsEl = document.getElementById('results');
-    const inputEl = document.getElementById('searchInput');
-    const clearButton = document.getElementById('clearButton');
-    const resultsCountEl = document.getElementById('resultsCount');
+    /* ══════════════════════════════════════════════
+       1. PARTICLE CANVAS — interactive, mouse-reactive
+    ══════════════════════════════════════════════ */
+    (function () {
+      var canvas = document.getElementById('particleCanvas');
+      var ctx    = canvas.getContext('2d');
+      var W, H;
+      var mouse  = { x: -9999, y: -9999 };
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      document.addEventListener('mousemove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+      document.addEventListener('mouseleave', function ()  { mouse.x = -9999;     mouse.y = -9999; });
+
+      function Particle() { this.reset(); }
+      Particle.prototype.reset = function () {
+        this.x  = Math.random() * W;
+        this.y  = Math.random() * H;
+        this.vx = (Math.random() - 0.5) * 0.36;
+        this.vy = (Math.random() - 0.5) * 0.36;
+        this.r  = Math.random() * 2.4 + 0.8;
+        this.a  = Math.random() * 0.22 + 0.07;
+      };
+      Particle.prototype.update = function () {
+        var dx = this.x - mouse.x;
+        var dy = this.y - mouse.y;
+        var d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < 110 && d > 0) {
+          var force = (110 - d) / 110;
+          this.vx  += (dx / d) * force * 0.22;
+          this.vy  += (dy / d) * force * 0.22;
+        }
+        this.vx *= 0.975;
+        this.vy *= 0.975;
+        this.x  += this.vx;
+        this.y  += this.vy;
+        if (this.x < 0) this.x = W;
+        if (this.x > W) this.x = 0;
+        if (this.y < 0) this.y = H;
+        if (this.y > H) this.y = 0;
+      };
+      Particle.prototype.draw = function () {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(200,16,46,' + this.a + ')';
+        ctx.fill();
+      };
+
+      var COUNT = 55;
+      var LINK  = 125;
+      var pts   = [];
+      for (var i = 0; i < COUNT; i++) pts.push(new Particle());
+
+      (function loop() {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < pts.length; i++) {
+          pts[i].update();
+          pts[i].draw();
+          for (var j = i + 1; j < pts.length; j++) {
+            var dx = pts[i].x - pts[j].x;
+            var dy = pts[i].y - pts[j].y;
+            var d  = Math.sqrt(dx * dx + dy * dy);
+            if (d < LINK) {
+              ctx.beginPath();
+              ctx.moveTo(pts[i].x, pts[i].y);
+              ctx.lineTo(pts[j].x, pts[j].y);
+              ctx.strokeStyle = 'rgba(200,16,46,' + ((1 - d / LINK) * 0.11) + ')';
+              ctx.lineWidth   = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(loop);
+      })();
+    })();
+
+    /* ══════════════════════════════════════════════
+       2. DATA LOADING + ANIMATED COUNTER
+    ══════════════════════════════════════════════ */
+    var applicants     = [];
+    var resultsEl      = document.getElementById('results');
+    var inputEl        = document.getElementById('searchInput');
+    var clearBtn       = document.getElementById('clearButton');
+    var resultsCountEl = document.getElementById('resultsCount');
+    var totalCountEl   = document.getElementById('totalCount');
+
+    function animateCount(el, target, ms) {
+      var step = target / (ms / 16);
+      var cur  = 0;
+      var t = setInterval(function () {
+        cur = Math.min(cur + step, target);
+        el.textContent = Math.floor(cur).toLocaleString();
+        if (cur >= target) clearInterval(t);
+      }, 16);
+    }
 
     fetch('applicants.json')
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error('Unable to load applicants data.');
-        }
-        return response.json();
-      })
+      .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
       .then(function (data) {
         applicants = Array.isArray(data) ? data : [];
-        document.getElementById('totalCount').textContent = applicants.length.toLocaleString();
+        animateCount(totalCountEl, applicants.length, 1400);
         showEmptyState();
       })
       .catch(function () {
-        document.getElementById('totalCount').textContent = '0';
+        totalCountEl.textContent = '0';
         resultsEl.innerHTML = '<div class="no-results">We could not load the applicant records. Please refresh the page or try again later.</div>';
         resultsCountEl.textContent = '0 matches';
       });
 
-    function formatName(person) {
-      const first = (person.first_name || '').trim();
-      const middle = (person.middle_name || '').trim();
-      const last = (person.last_name || '').trim();
-      const middleInitial = middle ? middle.split(/\s+/).filter(Boolean).map(function (segment) {
-        return segment.charAt(0).toUpperCase() + '.';
-      }).join(' ') : '';
-
-      return last.toUpperCase() + ', ' + first + (middleInitial ? ' ' + middleInitial : '');
+    /* ══════════════════════════════════════════════
+       3. NAME FORMATTER
+    ══════════════════════════════════════════════ */
+    function formatName(p) {
+      var first  = (p.first_name  || '').trim();
+      var middle = (p.middle_name || '').trim();
+      var last   = (p.last_name   || '').trim();
+      var mi = middle
+        ? middle.split(/\s+/).filter(Boolean).map(function (s) { return s.charAt(0).toUpperCase() + '.'; }).join(' ')
+        : '';
+      return last.toUpperCase() + ', ' + first + (mi ? ' ' + mi : '');
     }
 
+    /* ══════════════════════════════════════════════
+       4. RENDER RESULTS
+    ══════════════════════════════════════════════ */
     function showEmptyState() {
-      resultsEl.innerHTML = '<div class="empty-state">You may view the results here.</div>';
+      resultsEl.innerHTML = '<div class="empty-state">Type at least 4 characters to search for an applicant.</div>';
       resultsCountEl.textContent = '0 matches';
     }
 
@@ -578,58 +1379,162 @@
         resultsCountEl.textContent = '0 matches';
         return;
       }
-
-      resultsEl.innerHTML = list
-        .slice(0, 50)
-        .map(function (person) {
-          return '<div class="person-card">' +
-            '<div>' +
-              '<p class="person-name">' + formatName(person) + '</p>' +
-            '</div>' +
-            '<span class="badge">Qualified</span>' +
-          '</div>';
-        })
-        .join('');
-
+      resultsEl.innerHTML = list.slice(0, 50).map(function (person, i) {
+        return '<div class="person-card" style="animation-delay:' + (i * 0.045) + 's">' +
+          '<div><p class="person-name">' + formatName(person) + '</p></div>' +
+          '<span class="badge">Qualified</span>' +
+        '</div>';
+      }).join('');
+      attachCardTilt();
       resultsCountEl.textContent = list.length === 1 ? '1 match' : list.length + ' matches';
     }
 
-    inputEl.addEventListener('input', function (event) {
-      const query = event.target.value.trim();
-      clearButton.hidden = !query;
-
-      if (!query || query.length < 4) {
-        showEmptyState();
-        return;
-      }
-
-      const normalized = query.toLowerCase();
-      const exactStudentMatch = applicants.filter(function (person) {
-        return (person.student_num || '').trim().toLowerCase() === normalized;
+    /* ══════════════════════════════════════════════
+       5. 3-D CARD TILT (applied after render)
+    ══════════════════════════════════════════════ */
+    function attachCardTilt() {
+      document.querySelectorAll('.person-card').forEach(function (card) {
+        card.addEventListener('mousemove', function (e) {
+          var r = card.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width  - 0.5;
+          var y = (e.clientY - r.top)  / r.height - 0.5;
+          card.style.transform  = 'perspective(700px) rotateX(' + (-y * 5) + 'deg) rotateY(' + (x * 5) + 'deg) translateY(-3px)';
+          card.style.boxShadow  = '0 20px 40px rgba(31,36,48,0.10), 0 0 0 1px rgba(200,16,46,0.13)';
+          card.style.borderColor = 'rgba(200,16,46,0.18)';
+        });
+        card.addEventListener('mouseleave', function () {
+          card.style.transform  = '';
+          card.style.boxShadow  = '';
+          card.style.borderColor = '';
+        });
       });
+    }
 
-      const filtered = exactStudentMatch.length
-        ? exactStudentMatch
-        : applicants.filter(function (person) {
-            const nameText = (
-              (person.first_name || '') + ' ' +
-              (person.middle_name || '') + ' ' +
-              (person.last_name || '')
-            ).toLowerCase();
+    /* ══════════════════════════════════════════════
+       6. SEARCH LOGIC
+    ══════════════════════════════════════════════ */
+    inputEl.addEventListener('input', function (e) {
+      var query = e.target.value.trim();
+      clearBtn.hidden = !query;
 
-            return nameText.includes(normalized);
-          });
+      if (!query || query.length < 4) { showEmptyState(); return; }
 
+      var norm  = query.toLowerCase();
+      var exact = applicants.filter(function (p) {
+        return (p.student_num || '').trim().toLowerCase() === norm;
+      });
+      var filtered = exact.length ? exact : applicants.filter(function (p) {
+        var name = ((p.first_name || '') + ' ' + (p.middle_name || '') + ' ' + (p.last_name || '')).toLowerCase();
+        return name.includes(norm);
+      });
       renderResults(filtered);
     });
 
-    clearButton.addEventListener('click', function () {
-      inputEl.value = '';
-      clearButton.hidden = true;
+    clearBtn.addEventListener('click', function () {
+      inputEl.value   = '';
+      clearBtn.hidden = true;
       showEmptyState();
       inputEl.focus();
+    });
+
+    /* ══════════════════════════════════════════════
+       7. NAV TAB SWITCHING WITH RIPPLE
+    ══════════════════════════════════════════════ */
+    var tabs  = document.querySelectorAll('.nav-tab');
+    var pages = document.querySelectorAll('.page');
+
+    // Hide non-active pages on load
+    pages.forEach(function (p) {
+      if (!p.classList.contains('active')) p.style.display = 'none';
+    });
+
+    function switchPage(id) {
+      var current = document.querySelector('.page.active');
+      var target  = document.getElementById('page-' + id);
+      if (!target || current === target) return;
+
+      // Fade out current
+      current.classList.remove('visible');
+      setTimeout(function () {
+        current.classList.remove('active');
+        current.style.display = 'none';
+        // Fade in target
+        target.style.display = 'block';
+        target.classList.add('active');
+        // Double rAF ensures display:block is applied before transition starts
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            target.classList.add('visible');
+            triggerReveal();
+          });
+        });
+      }, 280);
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function (e) {
+        // Ripple effect
+        var span = document.createElement('span');
+        span.className = 'ripple';
+        var r = this.getBoundingClientRect();
+        span.style.left = (e.clientX - r.left) + 'px';
+        span.style.top  = (e.clientY - r.top)  + 'px';
+        this.appendChild(span);
+        setTimeout(function () { span.remove(); }, 700);
+
+        // Switch active tab styling
+        tabs.forEach(function (t) { t.classList.remove('active'); t.removeAttribute('aria-current'); });
+        this.classList.add('active');
+        this.setAttribute('aria-current', 'page');
+
+        switchPage(this.dataset.page);
+      });
+    });
+
+    /* ══════════════════════════════════════════════
+       8. SCROLL REVEAL (Intersection Observer)
+    ══════════════════════════════════════════════ */
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+    function triggerReveal() {
+      var idx = 0;
+      document.querySelectorAll('.reveal:not(.in-view)').forEach(function (el) {
+        el.style.transitionDelay = (idx * 0.1) + 's';
+        revealObs.observe(el);
+        idx++;
+      });
+    }
+
+    triggerReveal(); // Run on load for home page
+
+    /* ══════════════════════════════════════════════
+       9. FAQ ACCORDION
+    ══════════════════════════════════════════════ */
+    document.querySelectorAll('.faq-question').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var body   = this.nextElementSibling;
+        var isOpen = this.getAttribute('aria-expanded') === 'true';
+
+        // Close all open items
+        document.querySelectorAll('.faq-question[aria-expanded="true"]').forEach(function (q) {
+          q.setAttribute('aria-expanded', 'false');
+          q.nextElementSibling.classList.remove('open');
+        });
+
+        // Open the clicked item if it was closed
+        if (!isOpen) {
+          this.setAttribute('aria-expanded', 'true');
+          body.classList.add('open');
+        }
+      });
     });
   </script>
 </body>
 </html>
-
