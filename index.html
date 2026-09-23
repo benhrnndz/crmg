@@ -56,51 +56,150 @@
     }
 
     /* ══════════════════════════════════════
-       BACKGROUND — PHOTO PLACEHOLDER LAYERS
+       BACKGROUND — PHOTO COLLAGE
     ══════════════════════════════════════
 
-      📸 HOW TO ADD YOUR BACKGROUND PHOTO
-      ------------------------------------
-      Locate the element  <div class="bg-photo"></div>  in the HTML body.
-      In the CSS below, uncomment and fill in the url():
+       📸 HOW TO ADD YOUR BACKGROUND PHOTOS
+       ─────────────────────────────────────
+       1. Place your image files in the images/ folder.
 
-        background-image: url('your-background-photo.jpg');
+       2. In the HTML body, find the <div class="bg-collage"> section.
+          Each image slot looks like:
+            <div class="collage-img" style="background-image: url('images/YOUR-PHOTO.jpg');"></div>
 
-      The opacity is set to 0.08 for a subtle watermark effect.
-      Adjust between 0.05 and 0.15 to taste.
+          Replace YOUR-PHOTO.jpg with your actual filename.
+
+       3. Add or remove <div class="collage-img"> slots as needed.
+          The grid auto-fills, so any number of images works.
+
+       4. Adjust --collage-opacity (below) to taste.
+          Range: 0.04 (barely visible) to 0.15 (noticeable).
 
     ══════════════════════════════════════ */
-    .bg-photo {
+
+    :root {
+      --collage-opacity: 0.07;
+    }
+
+    /* Container: fixed behind everything */
+    .bg-collage {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      /* background-image: url('your-background-photo.jpg'); */
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* Left and right columns fill the side gutters */
+    .collage-side {
+      width: 320px;
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 200px;
+      gap: 6px;
+      padding: 10px;
+      opacity: var(--collage-opacity);
+    }
+    .collage-side.right {
+      direction: rtl; /* mirror the stagger on the right side */
+    }
+    .collage-side.right .collage-img {
+      direction: ltr; /* reset text inside */
+    }
+
+    /* Each photo tile */
+    .collage-img {
       background-size: cover;
       background-position: center;
-      opacity: 0.08;
-      /* Crosshatch gradient pattern shows while no photo is set */
-      background-color: transparent;
+      background-repeat: no-repeat;
+      border-radius: 8px;
     }
-    .bg-photo::before {
+    /* Stagger: make every other tile span taller for a collage feel */
+    .collage-img:nth-child(3n+1) {
+      grid-row: span 2;
+    }
+
+    /* Middle spacer keeps photos out of the content area */
+    .collage-spacer {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ── Gradient fade overlays ──
+       These blend the collage edges smoothly into the page background */
+    .bg-collage::before,
+    .bg-collage::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          45deg,
-          rgba(200, 16, 46, 0.018) 0px,
-          rgba(200, 16, 46, 0.018) 1px,
-          transparent 1px,
-          transparent 30px
-        ),
-        repeating-linear-gradient(
-          -45deg,
-          rgba(200, 16, 46, 0.018) 0px,
-          rgba(200, 16, 46, 0.018) 1px,
-          transparent 1px,
-          transparent 30px
-        );
+      top: 0;
+      bottom: 0;
+      width: 380px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* Left side: fade from page-bg into photos */
+    .bg-collage::before {
+      left: 0;
+      background: linear-gradient(
+        to left,
+        transparent 0%,
+        #fff8f9 85%
+      );
+    }
+    /* Right side: fade from photos into page-bg */
+    .bg-collage::after {
+      right: 0;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        #fff8f9 85%
+      );
+    }
+
+    /* Top + bottom gradient fades (via child elements in HTML) */
+    .collage-fade-top,
+    .collage-fade-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 180px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .collage-fade-top {
+      top: 0;
+      background: linear-gradient(to bottom, #fff8f9 0%, transparent 100%);
+    }
+    .collage-fade-bottom {
+      bottom: 0;
+      background: linear-gradient(to top, #fff8f9 0%, transparent 100%);
+    }
+
+    /* Inner gradient between photos and center content */
+    .collage-fade-inner-left,
+    .collage-fade-inner-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 120px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .collage-fade-inner-left {
+      left: 310px;
+      background: linear-gradient(to right, transparent 0%, #fff8f9 100%);
+    }
+    .collage-fade-inner-right {
+      right: 310px;
+      background: linear-gradient(to left, transparent 0%, #fff8f9 100%);
+    }
+
+    /* Hide collage on narrow screens where there are no side gutters */
+    @media (max-width: 1500px) {
+      .bg-collage { display: none; }
     }
 
     /* ══════════════════════════════════════
@@ -218,14 +317,6 @@
       font-size: 0.75rem;
     }
 
-    /* ══════════════════════════════════════
-       OFFICIAL LOGO PLACEHOLDER
-       ──────────────────────────────────────
-       📸 TO REPLACE: swap this <div> with:
-       <img src="official-logo.png"
-            alt="City of Santa Rosa Official Logo"
-            class="brand-logo" />
-    ══════════════════════════════════════ */
     .logo-placeholder {
       width: 42px; height: 42px;
       border-radius: 10px;
@@ -300,13 +391,6 @@
       background: rgba(255,255,255,0.05);
     }
 
-    /* ══════════════════════════════════════
-       HERO BACKGROUND PHOTO PLACEHOLDER
-       ──────────────────────────────────────
-       📸 TO REPLACE: uncomment and fill url():
-       background-image: url('hero-overlay-photo.jpg');
-       Blend mode "overlay" makes it mix with the red gradient.
-    ══════════════════════════════════════ */
     .hero-bg-ph {
       position: absolute;
       inset: 0;
@@ -919,7 +1003,62 @@
 
   <!-- ══════ BACKGROUND LAYERS ══════ -->
   <canvas id="particleCanvas"></canvas>
-  <div class="bg-photo"></div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       BACKGROUND PHOTO COLLAGE
+       ──────────────────────────────────────────────────────────
+       📸 HOW TO ADD PHOTOS:
+       1. Place your images in the images/ folder.
+       2. For each slot below, replace YOUR-PHOTO-XX.jpg
+          with your actual filename.
+       3. You can add MORE slots — just copy a <div class="collage-img">
+          line and paste it in the left or right column.
+       4. You can also REMOVE slots you don't need.
+  ══════════════════════════════════════════════════════════ -->
+  <div class="bg-collage">
+
+    <!-- Gradient fades (top + bottom + inner edges) -->
+    <div class="collage-fade-top"></div>
+    <div class="collage-fade-bottom"></div>
+    <div class="collage-fade-inner-left"></div>
+    <div class="collage-fade-inner-right"></div>
+
+    <!-- ┌──────────────────────────────────────────────┐
+         │  LEFT SIDE PHOTOS                             │
+         │  Replace each YOUR-PHOTO-L#.jpg filename     │
+         │  Add or remove slots as needed               │
+         └──────────────────────────────────────────────┘ -->
+    <div class="collage-side left">
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L1.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L2.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L3.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L4.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L5.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L6.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L7.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-L8.jpg');"></div>
+    </div>
+
+    <!-- Spacer: keeps photos away from center content -->
+    <div class="collage-spacer"></div>
+
+    <!-- ┌──────────────────────────────────────────────┐
+         │  RIGHT SIDE PHOTOS                            │
+         │  Replace each YOUR-PHOTO-R#.jpg filename     │
+         │  Add or remove slots as needed               │
+         └──────────────────────────────────────────────┘ -->
+    <div class="collage-side right">
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R1.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R2.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R3.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R4.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R5.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R6.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R7.jpg');"></div>
+      <div class="collage-img" style="background-image: url('images/YOUR-PHOTO-R8.jpg');"></div>
+    </div>
+
+  </div>
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
