@@ -185,22 +185,27 @@
        NAVIGATION BAR
     ══════════════════════════════════════ */
     .nav-bar {
-      display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.84);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.55); border-radius: 18px;
-      box-shadow: 0 4px 28px rgba(34,21,25,0.08); padding: 6px; margin: 20px 0 28px;
+      display: flex; align-items: center; gap: 8px;
+      background: transparent; border: none; box-shadow: none;
+      padding: 0; margin: 20px 0 28px;
     }
     .nav-tab {
-      flex: 1; padding: 11px 20px; border: none; background: transparent; color: var(--ink-soft);
-      font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; border-radius: 12px;
-      transition: background 0.22s, color 0.22s, box-shadow 0.22s; position: relative; overflow: hidden; letter-spacing: 0.015em;
+      padding: 10px 20px; border: none; background: transparent; color: var(--ink-soft);
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600;
+      transition: color 0.22s; position: relative; overflow: hidden; letter-spacing: 0.015em;
     }
-    .nav-tab:hover:not(.active) { background: rgba(200,16,46,0.07); color: var(--red); }
-    .nav-tab.active {
-      background: linear-gradient(135deg, var(--red), var(--red-deep)); color: #fff; box-shadow: 0 6px 20px rgba(200,16,46,0.28);
+    /* Underline indicator */
+    .nav-tab::after {
+      content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 0; height: 2.5px; background: var(--red); border-radius: 2px;
+      transition: width 0.28s ease;
     }
+    .nav-tab:hover { color: var(--red); }
+    .nav-tab:hover::after { width: 60%; }
+    .nav-tab.active { color: var(--red); font-weight: 700; }
+    .nav-tab.active::after { width: 80%; background: linear-gradient(90deg, var(--red), var(--red-deep)); }
     .ripple {
-      position: absolute; border-radius: 50%; background: rgba(255,255,255,0.28); width: 120px; height: 120px;
+      position: absolute; border-radius: 50%; background: rgba(200,16,46,0.12); width: 120px; height: 120px;
       margin-top: -60px; margin-left: -60px; pointer-events: none; animation: rippleAnim 0.65s linear forwards;
     }
     @keyframes rippleAnim {
