@@ -23,7 +23,9 @@ A static, single-page website that serves as the online presence for the Office 
 
 ```
 crmg/
-├── index.html                 # Main website (self-contained HTML/CSS/JS)
+├── index.html                 # Main website (HTML)
+├── styles.css                 # External CSS File
+├── script.js                  # External JS File
 ├── applicants.json            # CHED TDP qualified applicants data
 ├── tdp_applicants.csv         # Source CSV of applicant records
 ├── tdp_read.py                # Python script to convert Excel → JSON
