@@ -28,8 +28,6 @@ crmg/
 ├── tdp_applicants.csv         # Source CSV of applicant records
 ├── tdp_read.py                # Python script to convert Excel → JSON
 ├── README.md                  # This file
-├── CONGRESSMAN ROY GONZALES - LONE DISTRICT OF SANTA ROSA CHED TDP 2026-2027.xlsx
-│                              # Original Excel file of applicants
 └── images/
     ├── congressmanroygonzales.jpg   # Congressman's portrait
     ├── logo-santarosa.png           # City of Santa Rosa seal
