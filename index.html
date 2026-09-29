@@ -3,498 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Congressman Roy M. Gonzales — Lone District of Santa Rosa, Laguna</title>
+  <title>Congressman Roy M. Gonzales ”” Lone District of Santa Rosa, Laguna</title>
   <meta name="description" content="Official website of Congressman Roy M. Gonzales, representing the Lone District of Santa Rosa, Laguna." />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    /* ══════════════════════════════════════
-       DESIGN TOKENS
-    ══════════════════════════════════════ */
-    :root {
-      --red:           #C8102E;
-      --red-deep:      #9E0B23;
-      --red-soft:      #FDF1F4;
-      --ink:           #1f2430;
-      --ink-soft:      #5e6472;
-      --surface:       rgba(255, 255, 255, 0.80);
-      --surface-solid: #ffffff;
-      --line:          #e9edf2;
-      --success:       #177a4d;
-      --success-bg:    #eaf8f0;
-      --shadow:        0 18px 48px rgba(34, 21, 25, 0.11);
-      --collage-opacity: 0.07;
-    }
+  <link rel="stylesheet" href="styles.css">
 
-    /* ══════════════════════════════════════
-       RESET
-    ══════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    ul   { list-style: none; }
-    button { cursor: pointer; }
-
-    /* ══════════════════════════════════════
-       BODY
-    ══════════════════════════════════════ */
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-      color: var(--ink);
-      background: #fff8f9;
-      overflow-x: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ══════════════════════════════════════
-       BACKGROUND — PARTICLE CANVAS
-    ══════════════════════════════════════ */
-    #particleCanvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ══════════════════════════════════════
-       BACKGROUND — KEN BURNS CROSSFADE
-    ══════════════════════════════════════*/
-    .bg-collage {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .kb-slide {
-      position: absolute; inset: 0;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0;
-      will-change: transform, opacity;
-    }
-    /* Slide 1 (crmgpic10.jpg): pans left → right over ~20s */
-    .kb-slide-1 {
-      background-image: url('images/crmgpic10.jpg');
-      animation: kbSlide1 40s linear infinite;
-    }
-    /* Slide 2 (crmgpic2.jpg): pans right → left over ~20s */
-    .kb-slide-2 {
-      background-image: url('images/crmgpic2.jpg');
-      animation: kbSlide2 40s linear infinite;
-    }
-    @keyframes kbSlide1 {
-      0%   { opacity: 0.12; transform: scale(1.12) translateX(-2.9%); }
-      42%  { opacity: 0.12; }
-      50%  { opacity: 0;    transform: scale(1.12) translateX(4%); }
-      92%  { opacity: 0;    transform: scale(1.12) translateX(-4%); }
-      100% { opacity: 0.12; transform: scale(1.12) translateX(-2.9%); }
-    }
-    @keyframes kbSlide2 {
-      0%   { opacity: 0;    transform: scale(1.12) translateX(-4%); }
-      42%  { opacity: 0;    transform: scale(1.12) translateX(4%); }
-      50%  { opacity: 0.12; }
-      92%  { opacity: 0.12; }
-      100% { opacity: 0;    transform: scale(1.12) translateX(-4%); }
-    }
-    /* Soft vignette overlay to blend edges */
-    .kb-vignette {
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 40%, #fff8f9 85%);
-    }
-
-    /* ══════════════════════════════════════
-       BACKGROUND — AMBIENT DOTS
-    ══════════════════════════════════════ */
-    .dot {
-      position: fixed; border-radius: 50%; background: rgba(200,16,46,0.65); pointer-events: none; z-index: 0;
-      animation: twinkle 4s ease-in-out infinite;
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.22; transform: scale(1); }
-      50%       { opacity: 0.75; transform: scale(1.45); }
-    }
-
-    /* ══════════════════════════════════════
-       APP SHELL
-    ══════════════════════════════════════ */
-    .app-shell {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 28px 20px 72px;
-      flex: 1 0 auto;
-      width: 100%;
-    }
-
-    /* ══════════════════════════════════════
-       TOPBAR
-    ══════════════════════════════════════ */
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px;
-    }
-    .brand {
-      display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 700;
-      letter-spacing: 0.03em; text-transform: uppercase; font-size: 0.75rem;
-    }
-    .brand-logo { width: 42px; height: 42px; border-radius: 10px; object-fit: contain; flex-shrink: 0; }
-    .topbar-logo-right { margin-left: auto; }
-
-    /* ══════════════════════════════════════
-       NAVIGATION BAR
-    ══════════════════════════════════════ */
-    .nav-bar {
-      display: flex; align-items: center; gap: 8px;
-      background: transparent; border: none; box-shadow: none;
-      padding: 0; margin: 20px 0 28px;
-    }
-    .nav-tab {
-      padding: 10px 20px; border: none; background: transparent; color: var(--ink-soft);
-      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600;
-      transition: color 0.22s; position: relative; overflow: hidden; letter-spacing: 0.015em;
-    }
-    /* Underline indicator */
-    .nav-tab::after {
-      content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 0; height: 2.5px; background: var(--red); border-radius: 2px;
-      transition: width 0.28s ease;
-    }
-    .nav-tab:hover { color: var(--red); }
-    .nav-tab:hover::after { width: 60%; }
-    .nav-tab.active { color: var(--red); font-weight: 700; }
-    .nav-tab.active::after { width: 80%; background: linear-gradient(90deg, var(--red), var(--red-deep)); }
-    .ripple {
-      position: absolute; border-radius: 50%; background: rgba(200,16,46,0.12); width: 120px; height: 120px;
-      margin-top: -60px; margin-left: -60px; pointer-events: none; animation: rippleAnim 0.65s linear forwards;
-    }
-    @keyframes rippleAnim {
-      from { transform: scale(0); opacity: 1; }
-      to   { transform: scale(3.5); opacity: 0; }
-    }
-
-    /* ══════════════════════════════════════
-       HERO BANNER
-    ══════════════════════════════════════ */
-    .hero {
-      background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
-      border-radius: 28px; padding: clamp(28px, 4vw, 52px); color: #fff; box-shadow: var(--shadow);
-      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
-      overflow: hidden; position: relative; margin-bottom: 28px;
-    }
-    .hero::before {
-      content: ""; position: absolute; inset: auto -70px -90px auto; width: 320px; height: 320px;
-      border-radius: 50%; background: rgba(255,255,255,0.07);
-    }
-    .hero::after {
-      content: ""; position: absolute; inset: -70px auto auto -70px; width: 220px; height: 220px;
-      border-radius: 50%; background: rgba(255,255,255,0.05);
-    }
-    .hero-bg-ph {
-      position: absolute; inset: 0; background-image: url('images/congressmanroygonzales.jpg');
-      background-size: cover; background-position: center; opacity: 0.12; mix-blend-mode: overlay; pointer-events: none;
-      background-image: repeating-linear-gradient(105deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 20px);
-    }
-    .hero-copy { position: relative; z-index: 1; }
-    .office-line {
-      display: inline-block; margin: 0 0 18px; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.9; font-weight: 700;
-    }
-    h1 {
-      font-family: 'Barlow Condensed', 'Inter', sans-serif; font-weight: 700; font-size: clamp(2.5rem, 5vw, 4.5rem);
-      line-height: 0.96; text-transform: uppercase; letter-spacing: 0.02em;
-    }
-    .tagline { margin: 16px 0 0; font-size: 1.1rem; opacity: 0.96; font-style: italic; font-weight: 500; }
-
-    /* ══════════════════════════════════════
-       PAGE SWITCHING
-    ══════════════════════════════════════ */
-    .page {
-      opacity: 0; transform: translateY(10px); transition: opacity 0.28s ease, transform 0.28s ease; pointer-events: none;
-    }
-    .page.active  { pointer-events: auto; }
-    .page.visible { opacity: 1; transform: translateY(0); }
-
-    /* ══════════════════════════════════════
-       SCROLL REVEAL
-    ══════════════════════════════════════ */
-    .reveal {
-      opacity: 0; transform: translateY(22px); transition: opacity 0.55s ease, transform 0.55s ease;
-    }
-    .reveal.in-view { opacity: 1; transform: translateY(0); }
-
-    /* ══════════════════════════════════════
-       SHARED COMPONENTS (CARDS)
-    ══════════════════════════════════════ */
-    .about-card {
-      background: var(--surface); border: 1px solid rgba(255,255,255,0.3); border-radius: 22px;
-      box-shadow: var(--shadow); padding: 26px 28px; backdrop-filter: blur(12px);
-    }
-    .about-card-title { font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
-    .about-card p { color: var(--ink-soft); line-height: 1.77; font-size: 0.95rem; margin-bottom: 10px; }
-    .about-card p:last-child { margin-bottom: 0; }
-
-    /* ══════════════════════════════════════
-       HOME PAGE STYLES
-    ══════════════════════════════════════ */
-    .summary-section { display: grid; gap: 24px; }
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-    .stat-card {
-      background: var(--surface); border: 1px solid rgba(255,255,255,0.3); border-radius: 18px;
-      padding: 24px; text-align: center; box-shadow: var(--shadow); backdrop-filter: blur(12px);
-    }
-    .stat-card h3 { font-size: 2.2rem; color: var(--red); font-weight: 700; margin-bottom: 4px; line-height: 1; }
-    .stat-card p { font-size: 0.9rem; color: var(--ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .bio-card { display: flex; gap: 24px; align-items: center; }
-    .bio-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 4px solid #fff; }
-    @media (max-width: 600px) { .bio-card { flex-direction: column; text-align: center; } }
-
-    /* ══════════════════════════════════════
-       ACCOMPLISHMENTS PAGE (TIMELINE)
-    ══════════════════════════════════════ */
-    .timeline { position: relative; padding-left: 40px; margin-top: 10px; }
-    .timeline::before {
-      content: ""; position: absolute; left: 16px; top: 0; bottom: 0; width: 3px;
-      background: linear-gradient(to bottom, var(--red), var(--red-soft)); border-radius: 3px;
-    }
-    .timeline-item { position: relative; margin-bottom: 30px; }
-    .timeline-item::before {
-      content: ""; position: absolute; left: -31px; top: 2px; width: 16px; height: 16px;
-      border-radius: 50%; background: var(--red); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--red-soft);
-      z-index: 2;
-    }
-    .timeline-year { font-weight: 700; color: var(--red); font-size: 1rem; margin-bottom: 6px; letter-spacing: 0.05em; }
-    .timeline-card h4 { font-size: 1.1rem; margin-bottom: 6px; color: var(--ink); }
-
-    /* ══════════════════════════════════════
-       PROGRAMS PAGE
-    ══════════════════════════════════════ */
-    .program-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .program-card { display: flex; flex-direction: column; }
-    .program-card-full { grid-column: 1 / -1; }
-    .program-icon {
-      width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--red), var(--red-deep));
-      display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(200,16,46,0.22); margin-bottom: 16px;
-    }
-    .program-icon svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .btn-primary {
-      display: inline-block; background: linear-gradient(135deg, var(--red), var(--red-deep)); color: #fff;
-      border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 1rem;
-      margin-top: 16px; text-align: center; transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(200,16,46,0.3); }
-
-    /* List inside Programs */
-    .about-list { margin: 14px 0; display: grid; gap: 9px; }
-    .about-list li { display: flex; align-items: flex-start; gap: 10px; color: var(--ink-soft); font-size: 0.92rem; line-height: 1.55; }
-    .about-list li::before { content: ""; flex-shrink: 0; width: 7px; height: 7px; margin-top: 6px; border-radius: 50%; background: var(--red); }
-    
-    @media (max-width: 768px) { .program-grid { grid-template-columns: 1fr; } }
-
-    /* ══════════════════════════════════════
-       FAQ ACCORDION (Inside Programs)
-    ══════════════════════════════════════ */
-    .faq-container { margin-top: 24px; display: grid; gap: 10px; }
-    .faq-item {
-      background: var(--surface-solid); border: 1px solid var(--line); border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03); overflow: hidden; transition: box-shadow 0.22s;
-    }
-    .faq-item:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
-    .faq-question {
-      width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px;
-      padding: 16px 20px; background: transparent; border: none; font-family: 'Inter', sans-serif;
-      font-size: 0.94rem; font-weight: 600; color: var(--ink); text-align: left; transition: color 0.2s;
-    }
-    .faq-question:hover, .faq-question[aria-expanded="true"] { color: var(--red); }
-    .faq-chevron {
-      flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--red-soft);
-      display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease, background 0.2s;
-    }
-    .faq-question[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); background: rgba(200,16,46,0.13); }
-    .faq-chevron-icon {
-      width: 8px; height: 8px; border-right: 2px solid var(--red); border-bottom: 2px solid var(--red);
-      transform: rotate(45deg) translate(-1px, -2px);
-    }
-    .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-    .faq-body.open { max-height: 400px; }
-    .faq-answer { padding: 10px 20px 18px; color: var(--ink-soft); font-size: 0.92rem; line-height: 1.77; border-top: 1px solid var(--line); }
-
-    /* ══════════════════════════════════════
-       FLOATING ACTION BUTTON (FAB) & DRAWER
-    ══════════════════════════════════════ */
-    .fab {
-      position: fixed; bottom: 30px; right: 30px; z-index: 990;
-      background: linear-gradient(135deg, var(--red), var(--red-deep)); color: #fff;
-      border: none; border-radius: 999px; padding: 14px 24px; font-family: 'Inter', sans-serif;
-      font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 10px 25px rgba(200,16,46,0.35); transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .fab:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px rgba(200,16,46,0.45); }
-    .fab svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    .drawer-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-      z-index: 995; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    }
-    .drawer-overlay.active { opacity: 1; pointer-events: auto; }
-    
-    .drawer {
-      position: fixed; top: 0; bottom: 0; right: 0; width: 420px; max-width: 100vw;
-      background: #fff8f9; z-index: 1000; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: -10px 0 40px rgba(0,0,0,0.15); display: flex; flex-direction: column;
-    }
-    .drawer.active { transform: translateX(0); }
-    .drawer-header-bar {
-      padding: 20px 24px; background: #fff; border-bottom: 1px solid var(--line);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .drawer-header-bar h2 { font-size: 1.2rem; color: var(--ink); font-weight: 700; margin: 0; }
-    .drawer-close {
-      background: var(--red-soft); border: none; width: 32px; height: 32px; border-radius: 50%;
-      color: var(--red); font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s;
-    }
-    .drawer-close:hover { background: rgba(200,16,46,0.15); }
-    .drawer-content-area { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-    
-    .drawer-stats-card {
-      background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%); color: #fff;
-      border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px;
-    }
-    .drawer-stats-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
-    .drawer-stats-val { font-size: 2.2rem; font-weight: 700; line-height: 1; }
-
-    /* ══════════════════════════════════════
-       SEARCH & RESULTS (Moved to Drawer)
-    ══════════════════════════════════════ */
-    .search-panel, .results-panel {
-      background: var(--surface); border: 1px solid rgba(255,255,255,0.3); border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 18px; backdrop-filter: blur(12px);
-    }
-    .search-header { margin-bottom: 12px; }
-    .subtitle { margin: 0; color: var(--ink-soft); font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
-    .search-row {
-      display: flex; align-items: center; gap: 10px; background: var(--surface-solid);
-      border: 1.5px solid var(--line); border-radius: 12px; padding: 6px 10px 6px 14px;
-      transition: border-color 0.22s, box-shadow 0.22s;
-    }
-    .search-row:focus-within { border-color: rgba(200,16,46,0.4); box-shadow: 0 0 0 3px rgba(200,16,46,0.08); }
-    .search-icon {
-      flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--ink-soft);
-      position: relative; opacity: 0.7;
-    }
-    .search-icon::after {
-      content: ""; position: absolute; width: 8px; height: 2px; background: var(--ink-soft);
-      border-radius: 2px; right: -5px; bottom: -1px; transform: rotate(45deg);
-    }
-    input {
-      flex: 1; min-width: 0; border: none; background: transparent; color: var(--ink);
-      font-family: 'Inter', sans-serif; font-size: 0.95rem; padding: 10px 0; outline: none;
-    }
-    input::placeholder { color: #9aa3b2; }
-    .clear-button {
-      border: none; background: var(--red-soft); color: var(--red-deep); font-family: 'Inter', sans-serif;
-      font-weight: 700; font-size: 0.8rem; border-radius: 8px; padding: 6px 10px;
-    }
-    .clear-button[hidden] { display: none; }
-    
-    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .results-label { margin: 0; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
-    .results-count { background: var(--red-soft); color: var(--red-deep); border-radius: 999px; padding: 5px 10px; font-size: 0.75rem; font-weight: 700; }
-    .record-list { display: grid; gap: 10px; }
-    
-    .person-card {
-      display: flex; flex-direction: column; gap: 8px; padding: 14px; background: rgba(255,255,255,0.95);
-      border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 4px 10px rgba(31,36,48,0.04);
-      opacity: 0; transform: translateY(14px); animation: cardIn 0.36s ease forwards;
-      transition: box-shadow 0.22s ease, border-color 0.22s ease; will-change: transform;
-    }
-    @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
-    .person-name { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--ink); }
-    .badge {
-      align-self: flex-start; display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 999px; background: var(--success-bg); color: var(--success); padding: 5px 10px;
-      font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
-    }
-    .empty-state, .no-results {
-      background: rgba(255,255,255,0.80); border: 1px solid var(--line); border-radius: 12px;
-      padding: 20px 16px; color: var(--ink-soft); font-weight: 500; text-align: center; font-size: 0.9rem; line-height: 1.6;
-    }
-
-    /* ══════════════════════════════════════
-       FOOTER — Multi-Column with Curved Top
-    ══════════════════════════════════════ */
-    .footer {
-      position: relative; z-index: 2; margin-top: auto;
-      background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
-      color: #fff; padding: 0;
-    }
-    /* Curved concave top edge */
-    .footer-curve {
-      position: relative; top: -1px; width: 100%; height: 60px; overflow: hidden;
-      background: transparent;
-    }
-    .footer-curve::after {
-      content: ""; position: absolute; bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 120%; height: 120px;
-      border-radius: 0 0 50% 50%;
-      background: #fff8f9;
-    }
-    /* Columns area */
-    .footer-columns {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
-      max-width: 700px; margin: 0 auto; padding: 40px 24px 32px;
-    }
-    .footer-col {}
-    .footer-col-heading {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 0.82rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.1em; margin-bottom: 16px; color: #fff;
-    }
-    .footer-col-heading svg {
-      width: 18px; height: 18px; fill: none; stroke: rgba(255,255,255,0.8);
-      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
-    }
-    .footer-col ul { display: grid; gap: 8px; }
-    .footer-col li a, .footer-col li span {
-      color: rgba(255,255,255,0.85); font-size: 0.88rem; text-decoration: none;
-      transition: color 0.2s, opacity 0.2s; line-height: 1.5;
-    }
-    .footer-col li a:hover { color: #fff; opacity: 1; }
-    /* Bottom bar */
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.2);
-      max-width: 1100px; margin: 0 auto; padding: 20px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; flex-wrap: wrap;
-    }
-    .footer-bottom-left {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 0.85rem; font-weight: 600;
-    }
-    .footer-bottom-left img { width: 32px; height: 32px; border-radius: 8px; object-fit: contain; }
-    .footer-bottom-right {
-      font-size: 0.8rem; color: rgba(255,255,255,0.7);
-    }
-    @media (max-width: 480px) {
-      .footer-columns { grid-template-columns: 1fr; gap: 24px; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-    }
-
-    @media (max-width: 720px) {
-      .topbar { justify-content: center; }
-      .nav-tab { font-size: 0.82rem; padding: 10px 10px; }
-      .fab { bottom: 20px; right: 20px; padding: 12px 18px; }
-      .fab span { display: none; } /* Icon only on mobile */
-    }
-  </style>
 </head>
 <body>
 
-  <!-- ══════ BACKGROUND LAYERS ══════ -->
+  <!-- ══════ BACKGROUND LAYERS ══════ -->
   <canvas id="particleCanvas"></canvas>
   <div class="bg-collage">
     <div class="kb-slide kb-slide-1"></div>
@@ -510,7 +28,7 @@
   <span class="dot" style="width:3px;height:3px;top:40%;left:92%;animation-delay:2.4s;"></span>
   <span class="dot" style="width:5px;height:5px;top:85%;left:45%;animation-delay:0.3s;"></span>
 
-  <!-- ══════ APP ══════ -->
+  <!-- ══════ APP ══════ -->
   <div class="app-shell">
 
     <!-- TOPBAR -->
@@ -530,9 +48,9 @@
       <button class="nav-tab" data-page="programs">Programs</button>
     </nav>
 
-    <!-- ════════════════════════════════
+    <!-- ════════════════════════════════
          PAGE: HOME
-    ════════════════════════════════ -->
+    ════════════════════════════════ -->
     <div id="page-home" class="page active visible">
       
       <!-- HERO BANNER (Only on Home Page) -->
@@ -582,15 +100,15 @@
       </main>
     </div>
 
-    <!-- ════════════════════════════════
+    <!-- ════════════════════════════════
          PAGE: ACCOMPLISHMENTS
-    ════════════════════════════════ -->
+    ════════════════════════════════ -->
     <div id="page-accomplishments" class="page">
       <div class="timeline">
         <div class="timeline-item reveal">
           <div class="timeline-year">2024</div>
           <div class="timeline-card about-card">
-            <h4>Filed House Bill No. XXXX — Free College Tuition for Santa Rosa Residents</h4>
+            <h4>Filed House Bill No. XXXX ”” Free College Tuition for Santa Rosa Residents</h4>
             <p>[Placeholder] A landmark bill aimed at providing accessible higher education for all deserving youth in the district, ensuring no student is left behind due to financial constraints.</p>
           </div>
         </div>
@@ -629,9 +147,9 @@
       </div>
     </div>
 
-    <!-- ════════════════════════════════
+    <!-- ════════════════════════════════
          PAGE: PROGRAMS
-    ════════════════════════════════ -->
+    ════════════════════════════════ -->
     <div id="page-programs" class="page">
       <div class="program-grid">
         
@@ -644,8 +162,8 @@
             <h2 class="about-card-title" style="margin:0; font-size:1.6rem;">CHED TDP Scholarship</h2>
           </div>
           
-          <p>The <strong>CHED Tulong Dunong Program (TDP)</strong> is a scholarship initiative by the Commission on Higher Education. It provides financial assistance — including subsistence and book allowances — to qualified college students from low-income families.</p>
-          <p>Through the endorsement of Congressman Roy Gonzales, eligible residents of Santa Rosa are given priority access to the program for Academic Year 2026–2027.</p>
+          <p>The <strong>CHED Tulong Dunong Program (TDP)</strong> is a scholarship initiative by the Commission on Higher Education. It provides financial assistance ”” including subsistence and book allowances ”” to qualified college students from low-income families.</p>
+          <p>Through the endorsement of Congressman Roy Gonzales, eligible residents of Santa Rosa are given priority access to the program for Academic Year 2026”“2027.</p>
           
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px; margin-top:20px;">
             <div>
@@ -687,7 +205,7 @@
                 <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
               </button>
               <div class="faq-body">
-                <div class="faq-answer">Use the "Check Scholarship" tool accessible via the floating button. Enter your registered full name or your exact student number. If your name appears with a green "Qualified" badge, you are included in the endorsed list for Academic Year 2026–2027.</div>
+                <div class="faq-answer">Use the "Check Scholarship" tool accessible via the floating button. Enter your registered full name or your exact student number. If your name appears with a green "Qualified" badge, you are included in the endorsed list for Academic Year 2026”“2027.</div>
               </div>
             </div>
             <div class="faq-item">
@@ -705,7 +223,7 @@
                 <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
               </button>
               <div class="faq-body">
-                <div class="faq-answer">Make sure you are typing your name exactly as it appears on your school records, or your exact student number. The search requires at least 4 characters. If your name still does not appear, contact the Office of Congressman Roy Gonzales directly — your application may still be under processing or review.</div>
+                <div class="faq-answer">Make sure you are typing your name exactly as it appears on your school records, or your exact student number. The search requires at least 4 characters. If your name still does not appear, contact the Office of Congressman Roy Gonzales directly ”” your application may still be under processing or review.</div>
               </div>
             </div>
             <div class="faq-item">
@@ -732,7 +250,7 @@
                 <span class="faq-chevron"><span class="faq-chevron-icon"></span></span>
               </button>
               <div class="faq-body">
-                <div class="faq-answer">Generally yes — as long as you are a bona fide resident of Santa Rosa, Laguna and enrolled in a CHED-accredited institution anywhere in the Philippines. Proof of residency is required. Please confirm your eligibility with the district office.</div>
+                <div class="faq-answer">Generally yes ”” as long as you are a bona fide resident of Santa Rosa, Laguna and enrolled in a CHED-accredited institution anywhere in the Philippines. Proof of residency is required. Please confirm your eligibility with the district office.</div>
               </div>
             </div>
             <div class="faq-item">
@@ -795,7 +313,7 @@
 
   </div><!-- end .app-shell -->
 
-  <!-- ══════ FOOTER ══════ -->
+  <!-- ══════ FOOTER ══════ -->
   <footer class="footer">
     <div class="footer-curve"></div>
 
@@ -810,7 +328,7 @@
           <li><span>[123 Rizal Blvd, Santa Rosa, Laguna]</span></li>
           <li><span>[(049) 123-4567]</span></li>
           <li><a href="#">[office@roygonzales.ph]</a></li>
-          <li><span>[Mon–Fri, 8:00 AM – 5:00 PM]</span></li>
+          <li><span>[Mon”“Fri, 8:00 AM ”“ 5:00 PM]</span></li>
         </ul>
       </div>
 
@@ -841,13 +359,13 @@
     </div>
   </footer>
 
-  <!-- ══════ FLOATING ACTION BUTTON ══════ -->
+  <!-- ══════ FLOATING ACTION BUTTON ══════ -->
   <button class="fab open-drawer-btn" aria-label="Check Scholarship">
     <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
     <span>Check Scholarship</span>
   </button>
 
-  <!-- ══════ SIDE DRAWER ══════ -->
+  <!-- ══════ SIDE DRAWER ══════ -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="drawer" id="scholarshipDrawer">
     <div class="drawer-header-bar">
@@ -859,7 +377,7 @@
       <!-- Stats inside Drawer -->
       <div class="drawer-stats-card">
         <span class="drawer-stats-label">Total Applicants</span>
-        <span class="drawer-stats-val" id="totalCount">—</span>
+        <span class="drawer-stats-val" id="totalCount">””</span>
       </div>
       
       <!-- Search Panel -->
@@ -886,311 +404,6 @@
     </div>
   </div>
 
-  <script>
-    /* ══════════════════════════════════════════════
-       1. PARTICLE CANVAS
-    ══════════════════════════════════════════════ */
-    (function () {
-      var canvas = document.getElementById('particleCanvas');
-      var ctx    = canvas.getContext('2d');
-      var W, H;
-      var mouse  = { x: -9999, y: -9999 };
-
-      function resize() {
-        W = canvas.width  = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize);
-      document.addEventListener('mousemove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
-      document.addEventListener('mouseleave', function ()  { mouse.x = -9999;     mouse.y = -9999; });
-
-      function Particle() { this.reset(); }
-      Particle.prototype.reset = function () {
-        this.x  = Math.random() * W;
-        this.y  = Math.random() * H;
-        this.vx = (Math.random() - 0.5) * 0.36;
-        this.vy = (Math.random() - 0.5) * 0.36;
-        this.r  = Math.random() * 2.4 + 0.8;
-        this.a  = Math.random() * 0.22 + 0.07;
-      };
-      Particle.prototype.update = function () {
-        var dx = this.x - mouse.x;
-        var dy = this.y - mouse.y;
-        var d  = Math.sqrt(dx * dx + dy * dy);
-        if (d < 110 && d > 0) {
-          var force = (110 - d) / 110;
-          this.vx  += (dx / d) * force * 0.22;
-          this.vy  += (dy / d) * force * 0.22;
-        }
-        this.vx *= 0.975;
-        this.vy *= 0.975;
-        this.x  += this.vx;
-        this.y  += this.vy;
-        if (this.x < 0) this.x = W;
-        if (this.x > W) this.x = 0;
-        if (this.y < 0) this.y = H;
-        if (this.y > H) this.y = 0;
-      };
-      Particle.prototype.draw = function () {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(200,16,46,' + this.a + ')';
-        ctx.fill();
-      };
-
-      var COUNT = 55;
-      var LINK  = 125;
-      var pts   = [];
-      for (var i = 0; i < COUNT; i++) pts.push(new Particle());
-
-      (function loop() {
-        ctx.clearRect(0, 0, W, H);
-        for (var i = 0; i < pts.length; i++) {
-          pts[i].update();
-          pts[i].draw();
-          for (var j = i + 1; j < pts.length; j++) {
-            var dx = pts[i].x - pts[j].x;
-            var dy = pts[i].y - pts[j].y;
-            var d  = Math.sqrt(dx * dx + dy * dy);
-            if (d < LINK) {
-              ctx.beginPath();
-              ctx.moveTo(pts[i].x, pts[i].y);
-              ctx.lineTo(pts[j].x, pts[j].y);
-              ctx.strokeStyle = 'rgba(200,16,46,' + ((1 - d / LINK) * 0.11) + ')';
-              ctx.lineWidth   = 0.8;
-              ctx.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(loop);
-      })();
-    })();
-
-    /* ══════════════════════════════════════════════
-       2. DRAWER TOGGLE LOGIC
-    ══════════════════════════════════════════════ */
-    var drawer = document.getElementById('scholarshipDrawer');
-    var overlay = document.getElementById('drawerOverlay');
-    var closeBtn = document.getElementById('closeDrawer');
-    var openBtns = document.querySelectorAll('.open-drawer-btn');
-
-    function openDrawer() {
-      drawer.classList.add('active');
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
-    
-    function closeDrawer() {
-      drawer.classList.remove('active');
-      overlay.classList.remove('active');
-      document.body.style.overflow = ''; // Restore scrolling
-    }
-
-    openBtns.forEach(function(btn) {
-      btn.addEventListener('click', openDrawer);
-    });
-    closeBtn.addEventListener('click', closeDrawer);
-    overlay.addEventListener('click', closeDrawer);
-
-    /* ══════════════════════════════════════════════
-       3. DATA LOADING + ANIMATED COUNTER (In Drawer)
-    ══════════════════════════════════════════════ */
-    var applicants     = [];
-    var resultsEl      = document.getElementById('results');
-    var inputEl        = document.getElementById('searchInput');
-    var clearBtn       = document.getElementById('clearButton');
-    var resultsCountEl = document.getElementById('resultsCount');
-    var totalCountEl   = document.getElementById('totalCount');
-
-    function animateCount(el, target, ms) {
-      var step = target / (ms / 16);
-      var cur  = 0;
-      var t = setInterval(function () {
-        cur = Math.min(cur + step, target);
-        el.textContent = Math.floor(cur).toLocaleString();
-        if (cur >= target) clearInterval(t);
-      }, 16);
-    }
-
-    fetch('applicants.json')
-      .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
-      .then(function (data) {
-        applicants = Array.isArray(data) ? data : [];
-        animateCount(totalCountEl, applicants.length, 1400);
-        showEmptyState();
-      })
-      .catch(function () {
-        totalCountEl.textContent = '0';
-        resultsEl.innerHTML = '<div class="no-results">We could not load the applicant records. Please try again later.</div>';
-        resultsCountEl.textContent = '0 matches';
-      });
-
-    function formatName(p) {
-      var first  = (p.first_name  || '').trim();
-      var middle = (p.middle_name || '').trim();
-      var last   = (p.last_name   || '').trim();
-      var mi = middle
-        ? middle.split(/\s+/).filter(Boolean).map(function (s) { return s.charAt(0).toUpperCase() + '.'; }).join(' ')
-        : '';
-      return last.toUpperCase() + ', ' + first + (mi ? ' ' + mi : '');
-    }
-
-    function showEmptyState() {
-      resultsEl.innerHTML = '<div class="empty-state">Type at least 4 characters to search for an applicant.</div>';
-      resultsCountEl.textContent = '0 matches';
-    }
-
-    function renderResults(list) {
-      if (!list.length) {
-        resultsEl.innerHTML = '<div class="no-results">No match found. Please check your spelling or try a different keyword.</div>';
-        resultsCountEl.textContent = '0 matches';
-        return;
-      }
-      resultsEl.innerHTML = list.slice(0, 50).map(function (person, i) {
-        return '<div class="person-card" style="animation-delay:' + (i * 0.045) + 's">' +
-          '<p class="person-name">' + formatName(person) + '</p>' +
-          '<span class="badge">Qualified</span>' +
-        '</div>';
-      }).join('');
-      attachCardTilt();
-      resultsCountEl.textContent = list.length === 1 ? '1 match' : list.length + ' matches';
-    }
-
-    function attachCardTilt() {
-      document.querySelectorAll('.person-card').forEach(function (card) {
-        card.addEventListener('mousemove', function (e) {
-          var r = card.getBoundingClientRect();
-          var x = (e.clientX - r.left) / r.width  - 0.5;
-          var y = (e.clientY - r.top)  / r.height - 0.5;
-          card.style.transform  = 'perspective(700px) rotateX(' + (-y * 5) + 'deg) rotateY(' + (x * 5) + 'deg) translateY(-3px)';
-          card.style.boxShadow  = '0 8px 20px rgba(31,36,48,0.08), 0 0 0 1px rgba(200,16,46,0.13)';
-          card.style.borderColor = 'rgba(200,16,46,0.18)';
-        });
-        card.addEventListener('mouseleave', function () {
-          card.style.transform  = '';
-          card.style.boxShadow  = '';
-          card.style.borderColor = '';
-        });
-      });
-    }
-
-    inputEl.addEventListener('input', function (e) {
-      var query = e.target.value.trim();
-      clearBtn.hidden = !query;
-
-      if (!query || query.length < 4) { showEmptyState(); return; }
-
-      var norm  = query.toLowerCase();
-      var exact = applicants.filter(function (p) {
-        return (p.student_num || '').trim().toLowerCase() === norm;
-      });
-      var filtered = exact.length ? exact : applicants.filter(function (p) {
-        var name = ((p.first_name || '') + ' ' + (p.middle_name || '') + ' ' + (p.last_name || '')).toLowerCase();
-        return name.includes(norm);
-      });
-      renderResults(filtered);
-    });
-
-    clearBtn.addEventListener('click', function () {
-      inputEl.value   = '';
-      clearBtn.hidden = true;
-      showEmptyState();
-      inputEl.focus();
-    });
-
-    /* ══════════════════════════════════════════════
-       4. NAV TAB SWITCHING WITH RIPPLE
-    ══════════════════════════════════════════════ */
-    var tabs  = document.querySelectorAll('.nav-tab');
-    var pages = document.querySelectorAll('.page');
-
-    pages.forEach(function (p) {
-      if (!p.classList.contains('active')) p.style.display = 'none';
-    });
-
-    function switchPage(id) {
-      var current = document.querySelector('.page.active');
-      var target  = document.getElementById('page-' + id);
-      if (!target || current === target) return;
-
-      current.classList.remove('visible');
-      setTimeout(function () {
-        current.classList.remove('active');
-        current.style.display = 'none';
-        
-        target.style.display = 'block';
-        target.classList.add('active');
-        
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            target.classList.add('visible');
-            triggerReveal();
-          });
-        });
-      }, 280);
-    }
-
-    tabs.forEach(function (tab) {
-      tab.addEventListener('click', function (e) {
-        var span = document.createElement('span');
-        span.className = 'ripple';
-        var r = this.getBoundingClientRect();
-        span.style.left = (e.clientX - r.left) + 'px';
-        span.style.top  = (e.clientY - r.top)  + 'px';
-        this.appendChild(span);
-        setTimeout(function () { span.remove(); }, 700);
-
-        tabs.forEach(function (t) { t.classList.remove('active'); t.removeAttribute('aria-current'); });
-        this.classList.add('active');
-        this.setAttribute('aria-current', 'page');
-
-        switchPage(this.dataset.page);
-      });
-    });
-
-    /* ══════════════════════════════════════════════
-       5. SCROLL REVEAL (Intersection Observer)
-    ══════════════════════════════════════════════ */
-    var revealObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          revealObs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-
-    function triggerReveal() {
-      var idx = 0;
-      document.querySelectorAll('.page.active .reveal:not(.in-view)').forEach(function (el) {
-        el.style.transitionDelay = (idx * 0.1) + 's';
-        revealObs.observe(el);
-        idx++;
-      });
-    }
-
-    triggerReveal();
-
-    /* ══════════════════════════════════════════════
-       6. FAQ ACCORDION
-    ══════════════════════════════════════════════ */
-    document.querySelectorAll('.faq-question').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var body   = this.nextElementSibling;
-        var isOpen = this.getAttribute('aria-expanded') === 'true';
-
-        document.querySelectorAll('.faq-question[aria-expanded="true"]').forEach(function (q) {
-          q.setAttribute('aria-expanded', 'false');
-          q.nextElementSibling.classList.remove('open');
-        });
-
-        if (!isOpen) {
-          this.setAttribute('aria-expanded', 'true');
-          body.classList.add('open');
-        }
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
