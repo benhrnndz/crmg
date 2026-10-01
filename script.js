@@ -90,6 +90,9 @@ function openDrawer() {
   drawer.classList.add('active');
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  if (applicants && applicants.length > 0) {
+    animateCount(totalCountEl, applicants.length, 1200);
+  }
 }
 
 function closeDrawer() {
@@ -105,7 +108,7 @@ closeBtn.addEventListener('click', closeDrawer);
 overlay.addEventListener('click', closeDrawer);
 
 /* ══════════════════════════════════════════════
-   3. DATA LOADING + ANIMATED COUNTER (In Drawer)
+   3. DATA LOADING + ANIMATED COUNTER
 ══════════════════════════════════════════════ */
 var applicants     = [];
 var resultsEl      = document.getElementById('results');
@@ -114,14 +117,39 @@ var clearBtn       = document.getElementById('clearButton');
 var resultsCountEl = document.getElementById('resultsCount');
 var totalCountEl   = document.getElementById('totalCount');
 
-function animateCount(el, target, ms) {
-  var step = target / (ms / 16);
-  var cur  = 0;
-  var t = setInterval(function () {
-    cur = Math.min(cur + step, target);
-    el.textContent = Math.floor(cur).toLocaleString();
-    if (cur >= target) clearInterval(t);
-  }, 16);
+function animateCount(el, target, ms, suffix) {
+  if (!el) return;
+  suffix = suffix || '';
+  var start = null;
+  if (el._animId) cancelAnimationFrame(el._animId);
+
+  function step(timestamp) {
+    if (!start) start = timestamp;
+    var progress = Math.min((timestamp - start) / ms, 1);
+    // Linear: steady, constant speed ticking from start to finish
+    var val = Math.floor(progress * target);
+    el.textContent = val.toLocaleString() + suffix;
+    if (progress < 1) {
+      el._animId = requestAnimationFrame(step);
+    } else {
+      el.textContent = target.toLocaleString() + suffix;
+      el._animId = null;
+    }
+  }
+  el._animId = requestAnimationFrame(step);
+}
+
+var homeStatsAnimated = false;
+function animateHomeStats() {
+  if (homeStatsAnimated) return;
+  var statEls = document.querySelectorAll('.stat-number');
+  if (!statEls.length) return;
+  homeStatsAnimated = true;
+  statEls.forEach(function (el) {
+    var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+    var suffix = el.getAttribute('data-suffix') || '';
+    animateCount(el, target, 1600, suffix);
+  });
 }
 
 fetch('applicants.json')
@@ -237,6 +265,7 @@ function switchPage(id) {
       requestAnimationFrame(function () {
         target.classList.add('visible');
         triggerReveal();
+        if (id === 'home') animateHomeStats();
       });
     });
   }, 280);
@@ -267,6 +296,9 @@ var revealObs = new IntersectionObserver(function (entries) {
   entries.forEach(function (entry) {
     if (entry.isIntersecting) {
       entry.target.classList.add('in-view');
+      if (entry.target.classList.contains('stats-row') || entry.target.querySelector('.stat-number')) {
+        animateHomeStats();
+      }
       revealObs.unobserve(entry.target);
     }
   });
@@ -282,6 +314,7 @@ function triggerReveal() {
 }
 
 triggerReveal();
+setTimeout(animateHomeStats, 250);
 
 /* ══════════════════════════════════════════════
    6. FAQ ACCORDION
